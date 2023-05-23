@@ -1,0 +1,110 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Promotion Checkout API",
+        "description": "An API for applying promotions to a cart and calculating the final price."
+    },
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/health": {
+            "get": {
+                "summary": "Check the health of the API",
+                "responses": {
+                    "200": {
+                        "description": "The API is healthy and running.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/promoCheckout": {
+            "post": {
+                "summary": "Apply promotions to a cart and calculate the final price",
+                "parameters": [{
+                    "name": "cart",
+                    "in": "body",
+                    "description": "The cart to apply promotions to",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "cart": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "sku": {
+                                            "type": "string"
+                                        },
+                                        "qty": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": ["sku", "qty"]
+                                }
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "The final price after applying promotions.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "price": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The request was invalid or there was insufficient inventory.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
